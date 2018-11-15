@@ -12,7 +12,7 @@ var respond = ({auth, input}) => ({
 })
 
 
-var query = ({auth, input}) => compose(
+var _query = ({auth, input}) => compose(
 
   _ => request({
     url: 'https://maps.googleapis.com/maps/api/geocode/json',
@@ -40,23 +40,27 @@ var query = ({auth, input}) => compose(
 
 )()
 
-
-module.exports = {
-  respond,
-  query: async ({auth, input}) => {
-    if (auth.slack !== input.token || !input.text || input.text === 'help') {
-      return
-    }
-    try {
-      await query({auth, input})
-    }
-    catch (err) {
-      request({
-        method: 'POST',
-        url: input.response_url,
-        json: {attachments: attachment.error('Internal error!')}
-      })
-      throw err
-    }
+var query = async ({auth, input}) => {
+  if (auth.slack !== input.token || !input.text || input.text === 'help') {
+    return
+  }
+  try {
+    await _query({auth, input})
+  }
+  catch (err) {
+    request({
+      method: 'POST',
+      url: input.response_url,
+      json: {attachments: attachment.error('Internal error!')}
+    })
+    throw err
   }
 }
+
+var mw = (auth) => (req, res) => {
+  var input = req.body
+  res.json(respond({auth, input}))
+  query({auth, input}).catch(console.error)
+}
+
+module.exports = Object.assign(mw, {respond, query})
