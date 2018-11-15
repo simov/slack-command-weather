@@ -1,6 +1,6 @@
 {
   "name": "slack-command-weather",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Weather Forecast /slash Command for Slack",
   "keywords": [
     "slack",
