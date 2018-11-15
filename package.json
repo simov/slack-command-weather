@@ -23,7 +23,13 @@
     "request-logs": "0.0.5"
   },
   "main": "./index.js",
-  "files": [],
+  "files": [
+    "lib/",
+    "index.js",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {},
   "engines": {
     "node": ">=8.0.0"
