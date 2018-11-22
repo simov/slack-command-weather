@@ -3,42 +3,34 @@
 
 > Weather Forecast /slash Command for Slack
 
-## server
+## middleware
+
+```js
+var express = require('express')
+var weather = require('slack-command-weather')
+var auth = {google: 'API key', darksky: 'API key', slack: 'hook token'}
+
+express()
+  .use(weather(auth))
+  .listen(3000)
+```
+
+## api
 
 ```js
 var express = require('express')
 var parser = require('body-parser')
-
 var weather = require('slack-command-weather')
-var path = require('path')
-var auth = require(path.resolve(process.cwd(), process.argv[2]))
-
+var auth = {google: 'API key', darksky: 'API key', slack: 'hook token'}
 
 express()
   .use(parser.urlencoded({extended: true}))
-  .use(parser.json())
-  .use('/weather', (req, res) => {
+  .use((req, res) => {
     var input = req.body
     res.json(weather.respond({auth, input}))
     weather.query({auth, input}).catch(console.error)
   })
   .listen(3000)
-```
-
-## auth
-
-```json
-{
-  "google": "API key",
-  "darksky": "API key",
-  "slack": "hook token"
-}
-```
-
-## script
-
-```bash
-node server.js ~/path/to/auth.json
 ```
 
 ## command
@@ -48,7 +40,7 @@ Option                | Value
 Command               | `/weather`
 Request URL           | `https://website.com/weather`
 Short Description     | `Weather Forecast`
-Usage Hing            | `[location]`
+Usage Hint            | `[location]`
 
 ## example
 

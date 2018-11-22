@@ -15,11 +15,11 @@
     "url": "https://github.com/simov/slack-command-weather.git"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
     "request-compose": "^1.0.0"
   },
   "devDependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.3",
     "request-logs": "0.0.5"
   },
   "main": "./index.js",
